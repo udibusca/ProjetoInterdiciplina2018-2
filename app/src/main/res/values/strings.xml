@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Projeto Android 2018</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Projeto 2018</string>
+    <string name="nav_header_subtitle">Trabalho PDS1/Dispositivos Móveis</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main_categoria">Categorias</string>
+    <string name="title_activity_main_produto">Produtos</string>
+</resources>
