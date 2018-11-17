@@ -72,25 +72,34 @@ public class CategoriaActivity extends AppCompatActivity {
             }
         });
 
-        // Long click para poder a modal para atualizar ou deletar
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        // click para poder a modal para atualizar ou deletar
+        //click para poder a modal para atualizar ou deletar
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Categoria categoria = listaCategorias.get(i);
                 // Chama a modal
-                showAtualizaDeletaDialog(categoria.getId(), categoria.getNome());
-                return true;
+                showAtualizaDeletaDialog(categoria.getId(), categoria.getNome());;
             }
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Categoria categoria = listaCategorias.get(i);
+                // Chama a modal
+                showAtualizaDeletaDialog(categoria.getId(), categoria.getNome());
+            }
+        });
+
+ /*       listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int posicao, long l) {
                 Categoria categoria = listaCategorias.get(posicao);
                 buscaProdutoPorIdCategoria(categoria.getId());
             }
         });
-
+*/
         // Para o botão Up na Action Bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -123,7 +132,7 @@ public class CategoriaActivity extends AppCompatActivity {
         });
 
     }
-
+    @Deprecated
     private void buscaProdutoPorIdCategoria(int id) {
         Call<Categoria> call = categoriaService.getCategoria(id);
         call.enqueue(new Callback<Categoria>() {

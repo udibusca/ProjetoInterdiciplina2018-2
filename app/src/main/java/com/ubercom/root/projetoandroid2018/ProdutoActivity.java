@@ -11,16 +11,22 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ubercom.root.projetoandroid2018.adapter.CategoriaAdapter;
+import com.ubercom.root.projetoandroid2018.adapter.ListViewCategoriaCheckAdapter;
 import com.ubercom.root.projetoandroid2018.adapter.ProdutoAdapter;
 import com.ubercom.root.projetoandroid2018.model.Categoria;
 import com.ubercom.root.projetoandroid2018.model.Produto;
+import com.ubercom.root.projetoandroid2018.service.CategoriaService;
 import com.ubercom.root.projetoandroid2018.service.ProdutoService;
 import com.ubercom.root.projetoandroid2018.util.APIUtils;
 
@@ -38,10 +44,15 @@ import retrofit2.Response;
 public class ProdutoActivity extends AppCompatActivity {
 
     ListView listView;
+    ListView listViewCat;
+    ViewGroup parent;
     ProdutoService produtoService;
+    CategoriaService categoriaService;
     List<Produto> listaProdutos = new ArrayList<Produto>();
+    List<Categoria> listaCategoriasCheck = new ArrayList<Categoria>();
     private AlertDialog alerta;
     ProdutoAdapter produtoAdapter;
+    ListViewCategoriaCheckAdapter listViewCategoriaCheckAdapter;
     Context context;
 
     @Override
@@ -117,6 +128,15 @@ public class ProdutoActivity extends AppCompatActivity {
 
         final TextView imputNomeProduto = (TextView) popupInputDialogView.findViewById(R.id.produto_nome);
         final TextView imputPrecoProduto = (TextView) popupInputDialogView.findViewById(R.id.produto_preco);
+
+        List<Categoria> listViewItems = new ArrayList<Categoria>();
+        listViewItems.add(new Categoria("Nigeria"));
+        listViewItems.add(new Categoria("Ghana"));
+        listViewItems.add(new Categoria("Senegal"));
+        listViewItems.add(new Categoria("Togo"));
+
+        ListView listCat =  (ListView) popupInputDialogView.findViewById(R.id.listCategoriasCheck);
+        listCat.setAdapter(new ListViewCategoriaCheckAdapter(this, listViewItems));
 
         builder.setView(popupInputDialogView);
 
