@@ -92,14 +92,6 @@ public class CategoriaActivity extends AppCompatActivity {
             }
         });
 
- /*       listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int posicao, long l) {
-                Categoria categoria = listaCategorias.get(posicao);
-                buscaProdutoPorIdCategoria(categoria.getId());
-            }
-        });
-*/
         // Para o botão Up na Action Bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

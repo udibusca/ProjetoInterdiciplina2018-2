@@ -14,16 +14,23 @@ import com.ubercom.root.projetoandroid2018.model.Categoria;
 
 import java.util.List;
 
-public class ListViewCategoriaCheckAdapter extends BaseAdapter {
+import retrofit2.Callback;
+
+public class CustomAdapter extends BaseAdapter {
 
     private LayoutInflater lInflater;
     private List<Categoria> listCategoria;
 
     ViewHolder listViewHolder;
 
-    public ListViewCategoriaCheckAdapter(Context context, List<Categoria> customizedListView) {
+    public CustomAdapter(Context context, List<Categoria> customizedListView) {
         lInflater =(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         listCategoria = customizedListView;
+    }
+
+    public CustomAdapter(Context context, Callback<List<Categoria>> callback, List<Categoria> listaCategorias) {
+        lInflater =(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        listCategoria = listaCategorias;
     }
 
     @Override
@@ -31,7 +38,7 @@ public class ListViewCategoriaCheckAdapter extends BaseAdapter {
 
         if(convertView == null){
             listViewHolder = new ViewHolder();
-            convertView = lInflater.inflate(R.layout.listview_categoria_checkbox, parent, false);
+            convertView = lInflater.inflate(R.layout.row_item_categoria, parent, false);
 
             listViewHolder.textInListView = (TextView)convertView.findViewById(R.id.txtCategoriaNomeCheck);
             listViewHolder.checkBox = (CheckBox)convertView.findViewById(R.id.checkBox);
