@@ -11,6 +11,7 @@ public class Categoria {
     private int id;
     private String nome;
     private List<Produto> produtos = new ArrayList<Produto>();
+    private boolean isSelected;
 
     public Categoria() {
     }
@@ -46,5 +47,19 @@ public class Categoria {
 
     public void setProdutos(List<Produto> produtos) {
         this.produtos = produtos;
+    }
+
+    public boolean getSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    @Override
+    public String toString() {
+        return "Categoria{" +
+                "id=" + id + ", nome='" + nome +'}';
     }
 }

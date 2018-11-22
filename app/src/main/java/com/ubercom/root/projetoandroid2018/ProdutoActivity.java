@@ -169,7 +169,15 @@
                             produto.setNome(imputNomeProduto.getText().toString());
                             BigDecimal valor = new BigDecimal(imputPrecoProduto.getText().toString());
                             produto.setPreco(valor);
+                            ArrayList<Categoria> listSelecionados = new ArrayList<>();
+                            for(int i = 0; i < listaCategorias.size(); i++){
+                                if (listaCategorias.get(i).getSelected()) {
+                                    listSelecionados.add(listaCategorias.get(i));
+                                    produto.setCategorias(listSelecionados);
+                                }
+                            }
                             //add produto
+                            Log.i("Vai ser Cadastrado", " : "+produto.toString());
                             addProduto(produto);
                             startActivity(intent);
                             Toast.makeText(ProdutoActivity.this, "Produto criada com sucesso!", Toast.LENGTH_SHORT).show();

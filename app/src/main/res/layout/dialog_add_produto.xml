@@ -11,14 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Produto"
-        android:inputType="textPersonName"/>
+        android:inputType=""/>
 
     <EditText
         android:id="@+id/produto_preco"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Preço"
-        android:inputType="textPersonName" />
+        android:inputType="" />
 
     <TextView
         android:id="@+id/textView2"
