@@ -251,7 +251,13 @@
                         produtoUpdate.setNome(editTextNome.getText().toString());
                         BigDecimal valor = new BigDecimal(editTextPreco.getText().toString());
                         produtoUpdate.setPreco(valor);
-                        produtoUpdate.setCategorias(listaCategoriasUpdate);
+                        ArrayList<Categoria> listSelecionadosUpdate = new ArrayList<>();
+                        for(int i = 0; i < listaCategoriasUpdate.size(); i++){
+                            if (listaCategoriasUpdate.get(i).getSelected()) {
+                                listSelecionadosUpdate.add(listaCategoriasUpdate.get(i));
+                                produtoUpdate.setCategorias(listSelecionadosUpdate);
+                            }
+                        }
                         //update produto
                         updateProduto(produto.getId(), produtoUpdate);
                         b.dismiss();
