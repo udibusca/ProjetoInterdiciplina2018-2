@@ -17,33 +17,57 @@ android:padding="@dimen/activity_horizontal_margin">
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Selecione a(s) categoria(s)" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="176dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="#e0e0e0"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/listCategoriasCheckUpdate"
+                android:layout_width="match_parent"
+                android:layout_height="150dp" />
+        </LinearLayout>
+    </ScrollView>
+
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="117dp"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/buttonUpdateProduto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Atualizar"/>
+        <Button
+            android:id="@+id/buttonUpdateProduto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Atualizar" />
 
-    <Button
-        android:id="@+id/buttonDeleteProduto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Deletar"/>
+        <Button
+            android:id="@+id/buttonDeleteProduto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Deletar" />
 
-    <Button
-        android:id="@+id/buttonCancelarProduto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Cancelar" />
+        <Button
+            android:id="@+id/buttonCancelarProduto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancelar" />
 
-</LinearLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

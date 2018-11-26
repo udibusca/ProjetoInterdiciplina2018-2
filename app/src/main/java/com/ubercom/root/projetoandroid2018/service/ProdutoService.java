@@ -17,6 +17,9 @@ public interface ProdutoService {
     @GET("produtos/listaProdutos")
     Call<List<Produto>> getProdutos();
 
+    @GET("produtos/{id}")
+    Call<Produto> getProduto(@Path("id") int id);
+
     @POST("produtos/")
     Call<Produto> addProduto(@Body Produto produto);
 

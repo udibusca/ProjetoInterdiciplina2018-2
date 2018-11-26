@@ -1,12 +1,10 @@
         package com.ubercom.root.projetoandroid2018;
 
         import android.app.AlertDialog;
-        import android.content.Context;
         import android.content.DialogInterface;
         import android.content.Intent;
         import android.os.Bundle;
         import android.support.design.widget.FloatingActionButton;
-        import android.support.v4.app.ActivityCompat;
         import android.support.v7.app.AppCompatActivity;
         import android.support.v7.widget.Toolbar;
         import android.util.Log;
@@ -14,15 +12,12 @@
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.AdapterView;
-        import android.widget.ArrayAdapter;
         import android.widget.Button;
         import android.widget.EditText;
-        import android.widget.ListAdapter;
         import android.widget.ListView;
         import android.widget.TextView;
         import android.widget.Toast;
 
-        import com.ubercom.root.projetoandroid2018.adapter.CategoriaAdapter;
         import com.ubercom.root.projetoandroid2018.adapter.CustomAdapter;
         import com.ubercom.root.projetoandroid2018.adapter.ProdutoAdapter;
         import com.ubercom.root.projetoandroid2018.model.Categoria;
@@ -46,17 +41,16 @@
 
             ListView listView;
             ListView listViewCat;
+            ListView listViewCatAtualiza;
             View popupInputDialogView;
             ViewGroup parent;
             ProdutoService produtoService;
             CategoriaService categoriaService;
             List<Produto> listaProdutos = new ArrayList<Produto>();
             List<Categoria> listaCategorias;
-            List<Categoria> listaCategoriasAux;
+            List<Categoria> listaCategoriasUpdate;
             private AlertDialog alerta;
             ProdutoAdapter produtoAdapter;
-            CategoriaAdapter listViewCategoriaCheckAdapter;
-            Context context;
 
             @Override
             protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +77,22 @@
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int posicao, long l) {
                         Produto produto = listaProdutos.get(posicao);
-                        // Chama a modal
-                        showAtualizaDeletaDialog(produto.getId(), produto.getNome(), produto.getPreco());
-                    }
+                        Call<Produto> call = produtoService.getProduto(produto.getId());
+                        call.enqueue(new Callback<Produto>() {
+                            @Override
+                            public void onResponse(Call<Produto> call, Response<Produto> response) {
+                                if(response.isSuccessful()){
+                                    Produto produtoUnico = response.body();
+                                    // Chama a modal
+                                    showAtualizaDeletaDialog(produtoUnico);
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<Produto> call, Throwable t) {
+                                Log.e("ERROR: ", t.getMessage());
+                            }
+                        });
+                        }
                 });
 
                 // Para o botão Up na Action Bar
@@ -190,23 +197,48 @@
                 alerta.show();
             }
 
-            private void showAtualizaDeletaDialog(final int produtoId, String produtoNome,BigDecimal produtoPreco) {
+            private void showAtualizaDeletaDialog(final Produto produto) {
 
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
                 LayoutInflater inflater = getLayoutInflater();
                 final View dialogView = inflater.inflate(R.layout.dialog_atualizar_produto, null);
+                listViewCatAtualiza =  (ListView) dialogView.findViewById(R.id.listCategoriasCheckUpdate);
+
                 dialogBuilder.setView(dialogView);
 
                 final EditText editTextNome = (EditText) dialogView.findViewById(R.id.edtProdutoNome);
                 final EditText editTextPreco = (EditText) dialogView.findViewById(R.id.edtProdutoPreco);
+                //final EditText listaCategoriasEdit = (EditText) dialogView.findViewById(R.id.listCategoriasCheckUpdate);
                 final Button buttonAtualizar = (Button) dialogView.findViewById(R.id.buttonUpdateProduto);
                 final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDeleteProduto);
                 final Button buttonCancelarProduto = (Button) dialogView.findViewById(R.id.buttonCancelarProduto);
 
 
-                dialogBuilder.setTitle("ID: "+produtoId);
-                editTextNome.setText(produtoNome);
-                editTextPreco.setText(produtoPreco.toString());
+                dialogBuilder.setTitle("ID: "+produto.getId());
+                editTextNome.setText(produto.getNome());
+                editTextPreco.setText(produto.getPreco().toString());
+
+                // Pega todas as categorias para poder dar o check somente nas que vier do produto.
+                categoriaService = APIUtils.getCategoriaService();
+                Call<List<Categoria>> call = categoriaService.getCategorias();
+                call.enqueue(new Callback<List<Categoria>>() {//chamada assíncrona
+                    public void onResponse(Call<List<Categoria>> call, Response<List<Categoria>> response) {
+                        int statusCode = response.code();
+                        listaCategoriasUpdate = response.body();
+
+                        for (Categoria cat : produto.getCategorias()) {
+                            if (listaCategoriasUpdate.contains(cat)) {
+                                int pos = listaCategoriasUpdate.indexOf(cat);
+                                listaCategoriasUpdate.get(pos).setSelected(true);
+                            }
+                            listViewCatAtualiza.setAdapter(new CustomAdapter(ProdutoActivity.this, listaCategoriasUpdate));
+                        }
+
+                    }
+
+                    public void onFailure(Call<List<Categoria>> call, Throwable t) {
+                    }
+                });
 
                 final AlertDialog b = dialogBuilder.create();
                 b.show();
@@ -215,12 +247,13 @@
                 buttonAtualizar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Produto produto = new Produto();
-                        produto.setNome(editTextNome.getText().toString());
+                        Produto produtoUpdate = new Produto();
+                        produtoUpdate.setNome(editTextNome.getText().toString());
                         BigDecimal valor = new BigDecimal(editTextPreco.getText().toString());
-                        produto.setPreco(valor);
+                        produtoUpdate.setPreco(valor);
+                        produtoUpdate.setCategorias(listaCategoriasUpdate);
                         //update produto
-                        updateProduto(produtoId, produto);
+                        updateProduto(produto.getId(), produtoUpdate);
                         b.dismiss();
                         Intent intent = new Intent(ProdutoActivity.this, ProdutoActivity.class);
                         startActivity(intent);
@@ -231,7 +264,7 @@
                 buttonDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        deleteProduto(produtoId);
+                        deleteProduto(produto.getId());
                         b.dismiss();
                         Intent intent = new Intent(ProdutoActivity.this, ProdutoActivity.class);
                         startActivity(intent);
