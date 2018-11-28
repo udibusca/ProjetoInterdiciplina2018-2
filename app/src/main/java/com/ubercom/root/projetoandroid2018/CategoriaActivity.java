@@ -288,12 +288,16 @@ public class CategoriaActivity extends AppCompatActivity {
         call.enqueue(new Callback<Categoria>() {
             @Override
             public void onResponse(Call<Categoria> call, Response<Categoria> response) {
-                if(response.isSuccessful())
+                if(response.isSuccessful()){
                     Toast.makeText(CategoriaActivity.this, "Categoria deletada com sucesso!", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(CategoriaActivity.this, "Não é possível excluir a categoria pois está associada a algum produto.!", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(Call<Categoria> call, Throwable t) {
+                Toast.makeText(CategoriaActivity.this, "Não deletada!", Toast.LENGTH_SHORT).show();
                 Log.e("ERROR: ", t.getMessage());
             }
         });
